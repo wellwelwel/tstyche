@@ -161,10 +161,12 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build
-      - run: seq 10 | xargs -I {} sh -c 'yarn test:e2e'
+      - run: |
+        yarn run prebuild
+        seq 3 | xargs -I {} sh -c 'yarn test:e2e'
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
-          FILTER: api-toRaiseError
+          # FILTER: api-toRaiseError
 
   # coverage-upload:
   #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
