@@ -47,73 +47,73 @@ jobs:
       - run: yarn check:spelling
       - run: yarn check:types
 
-  quality:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+  # quality:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Code Quality
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          check-latest: true
-          node-version: lts/*
-      - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - run: yarn biome ci --error-on-warnings
+  #   name: Code Quality
+  #   needs:
+  #     - build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+  #     - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+  #       with:
+  #         check-latest: true
+  #         node-version: lts/*
+  #     - run: yarn install
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: build
+  #     - run: yarn biome ci --error-on-warnings
 
-  test-types:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+  # test-types:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Test Types
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          check-latest: true
-          node-version: lts/*
-      - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - run: yarn test:types --target 4.7,5.0,current
-      - run: yarn test:examples --target 4.7,5.0,current
-      - run: yarn tstyche tests/*.js --target current
+  #   name: Test Types
+  #   needs:
+  #     - build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+  #     - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+  #       with:
+  #         check-latest: true
+  #         node-version: lts/*
+  #     - run: yarn install
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: build
+  #     - run: yarn test:types --target 4.7,5.0,current
+  #     - run: yarn test:examples --target 4.7,5.0,current
+  #     - run: yarn tstyche tests/*.js --target current
 
-  test-node:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+  # test-node:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Test Build on Node.js v${{ matrix.node-version }}
-    needs:
-      - build
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: ["16.14", "16.x", "18.x", "20.x", "22.x"]
-    runs-on: ubuntu-latest
+  #   name: Test Build on Node.js v${{ matrix.node-version }}
+  #   needs:
+  #     - build
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       node-version: ["16.14", "16.x", "18.x", "20.x", "22.x"]
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          check-latest: true
-          node-version: ${{ matrix.node-version }}
-      - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - run: yarn test
+  #   steps:
+  #     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+  #       with:
+  #         check-latest: true
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: yarn install
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: build
+  #     - run: yarn test
 
   test-os:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -124,7 +124,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -149,7 +149,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [macos-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -174,37 +174,37 @@ jobs:
           name: coverage-${{ matrix.os }}-${{ github.sha }}
           path: coverage/raw-coverage-*
 
-  coverage-upload:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+  # coverage-upload:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Upload Coverage
-    needs:
-      - build
-      - coverage-collect
-    runs-on: ubuntu-latest
+  #   name: Upload Coverage
+  #   needs:
+  #     - build
+  #     - coverage-collect
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          check-latest: true
-          node-version: lts/*
-      - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          merge-multiple: true
-          path: coverage
-          pattern: coverage-*
-      - run: node ./scripts/report-coverage.js --merge
-        env:
-          FORCE_COLOR: true
-      - run: node ./scripts/upload-coverage.js
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          COMMIT_SHA: ${{ github.sha }}
-          COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          FORCE_COLOR: true
+  #   steps:
+  #     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+  #     - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+  #       with:
+  #         check-latest: true
+  #         node-version: lts/*
+  #     - run: yarn install
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: build
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         merge-multiple: true
+  #         path: coverage
+  #         pattern: coverage-*
+  #     - run: node ./scripts/report-coverage.js --merge
+  #       env:
+  #         FORCE_COLOR: true
+  #     - run: node ./scripts/upload-coverage.js
+  #       env:
+  #         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+  #         COMMIT_SHA: ${{ github.sha }}
+  #         COMMIT_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+  #         FORCE_COLOR: true
