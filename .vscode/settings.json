@@ -4,7 +4,7 @@
     "source.organizeImports.biome": "explicit"
   },
   "editor.formatOnSave": true,
-  "editor.rulers": [80, 120],
+  // "editor.rulers": [80, 120],
   "files.associations": {
     "cspell.config.json": "jsonc",
     "tstyche.config.json": "jsonc"

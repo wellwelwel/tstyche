@@ -1,0 +1,25 @@
+services:
+  # build:
+  #   image: node:20-alpine
+  #   working_dir: /usr/app
+  #   volumes:
+  #     - ./:/usr/app
+  #   command: sh -c 'yarn install && yarn build'
+
+  test:
+    image: node:22-alpine
+    working_dir: /usr/app
+    volumes:
+      - ./:/usr/app
+    command: yarn run test
+    environment:
+      CI: 1
+      # FILTER: api-toRaiseError.test.js
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "2G"
+        reservations:
+          cpus: "1.0"
+          memory: "2G"
