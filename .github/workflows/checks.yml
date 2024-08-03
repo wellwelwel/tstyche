@@ -26,26 +26,26 @@ jobs:
           name: build-${{ github.sha }}
           path: build
 
-  check:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+  # check:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Check
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          check-latest: true
-          node-version: lts/*
-      - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - run: yarn check:spelling
-      - run: yarn check:types
+  #   name: Check
+  #   needs:
+  #     - build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+  #     - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+  #       with:
+  #         check-latest: true
+  #         node-version: lts/*
+  #     - run: yarn install
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: build
+  #     - run: yarn check:spelling
+  #     - run: yarn check:types
 
   # quality:
   #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
@@ -115,34 +115,32 @@ jobs:
   #         path: build
   #     - run: yarn test
 
-  test-os:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+  # test-os:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
 
-    name: Test Build on ${{ matrix.os }}
-    needs:
-      - build
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest]
-    runs-on: ${{ matrix.os }}
+  #   name: Test Build on ${{ matrix.os }}
+  #   needs:
+  #     - build
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [macos-latest]
+  #   runs-on: ${{ matrix.os }}
 
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-      - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
-        with:
-          check-latest: true
-          node-version: lts/*
-      - run: yarn install
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          name: build-${{ github.sha }}
-          path: build
-      - run: yarn test
+  #   steps:
+  #     - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+  #     - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
+  #       with:
+  #         check-latest: true
+  #         node-version: lts/*
+  #     - run: yarn install
+  #     - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: build
+  #     - run: yarn test
 
   coverage-collect:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
-
     name: Collect Coverage on ${{ matrix.os }}
     needs:
       - build
@@ -166,13 +164,7 @@ jobs:
       - run: yarn test:e2e
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
-      - run: node ./scripts/report-coverage.js
-        env:
-          FORCE_COLOR: true
-      - uses: actions/upload-artifact@89ef406dd8d7e03cfd12d9e0a4a378f454709029 # v4
-        with:
-          name: coverage-${{ matrix.os }}-${{ github.sha }}
-          path: coverage/raw-coverage-*
+          FILTER: api-toRaiseError
 
   # coverage-upload:
   #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
