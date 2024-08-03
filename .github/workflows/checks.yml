@@ -161,7 +161,7 @@ jobs:
         with:
           name: build-${{ github.sha }}
           path: build
-      - run: yarn test:e2e
+      - run: seq 10 | xargs -I {} sh -c 'yarn test:e2e'
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
           FILTER: api-toRaiseError
