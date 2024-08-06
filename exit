@@ -1,69 +1,87 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __importDefault = (this && this.__importDefault) || ((mod) => (mod && mod.__esModule ? mod : { default: mod }));
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.exit = void 0;
-const node_process_1 = __importDefault(require("process"));
-const poku_js_1 = require("../../configs/poku.js");
-const format_js_1 = require("../../services/format.js");
-const write_js_1 = require("../../services/write.js");
-const files_js_1 = require("../../configs/files.js");
-const time_js_1 = require("../../parsers/time.js");
-const node_assert_1 = require("assert");
+const nodeProcess1 = __importDefault(require("process"));
+const pokuJs1 = require("../../configs/poku.js");
+const formatJs1 = require("../../services/format.js");
+const writeJs1 = require("../../services/write.js");
+const filesJs1 = require("../../configs/files.js");
+const timeJs1 = require("../../parsers/time.js");
+const nodeAssert1 = require("assert");
 const exit = (code, quiet) => {
-    const isPoku = poku_js_1.results.success > 0 || poku_js_1.results.fail > 0;
-    const success = ` PASS › ${poku_js_1.results.success - poku_js_1.results.skip || 0} `;
-    const failure = ` FAIL › ${poku_js_1.results.fail} `;
-    const skips = ` SKIP › ${poku_js_1.results.skip} `;
-    const plans = ` TODO › ${poku_js_1.results.todo} `;
-    const inline = poku_js_1.results.skip === 0 || poku_js_1.results.todo === 0;
-    let message = '';
-    if (inline) {
-        message += `${(0, format_js_1.format)(success).bg('green')} ${(0, format_js_1.format)(failure).bg(poku_js_1.results.fail === 0 ? 'grey' : 'brightRed')}`;
-        if (poku_js_1.results.skip) {
-            message += ` ${(0, format_js_1.format)(skips).bg('brightBlue')}`;
-        }
-        if (poku_js_1.results.todo) {
-            message += ` ${(0, format_js_1.format)(plans).bg('brightBlue')}`;
-        }
+  const isPoku = pokuJs1.results.success > 0 || pokuJs1.results.fail > 0;
+  const success = ` PASS › ${pokuJs1.results.success - pokuJs1.results.skip || 0} `;
+  const failure = ` FAIL › ${pokuJs1.results.fail} `;
+  const skips = ` SKIP › ${pokuJs1.results.skip} `;
+  const plans = ` TODO › ${pokuJs1.results.todo} `;
+  const inline = pokuJs1.results.skip === 0 || pokuJs1.results.todo === 0;
+  let message = "";
+  if (inline) {
+    message += `${(0, formatJs1.format)(success).bg("green")} ${(0, formatJs1.format)(failure).bg(
+      pokuJs1.results.fail === 0 ? "grey" : "brightRed"
+    )}`;
+    if (pokuJs1.results.skip) {
+      message += ` ${(0, formatJs1.format)(skips).bg("brightBlue")}`;
     }
-    else {
-        message += `${(0, format_js_1.format)(success).success().bold()}\n`;
-        message +=
-            poku_js_1.results.fail === 0
-                ? (0, format_js_1.format)(`${failure}\n`).bold()
-                : `${(0, format_js_1.format)(failure).fail().bold()}\n`;
-        message += `${(0, format_js_1.format)(skips).info().bold()}\n`;
-        message += `${(0, format_js_1.format)(plans).info().bold()}`;
+    if (pokuJs1.results.todo) {
+      message += ` ${(0, formatJs1.format)(plans).bg("brightBlue")}`;
     }
-    !quiet &&
-        node_process_1.default.on('exit', (code) => {
-            if (isPoku) {
-                write_js_1.Write.hr();
-                write_js_1.Write.log(`    ${(0, format_js_1.format)(`Start at › ${(0, format_js_1.format)(`${(0, time_js_1.parseTime)(files_js_1.finalResults.started)}`).bold()}`).dim()}`);
-                write_js_1.Write.log(`    ${(0, format_js_1.format)('Duration ›').dim()} ${(0, format_js_1.format)(`${files_js_1.finalResults.time}ms`).bold().dim()} ${(0, format_js_1.format)(`(±${(0, time_js_1.parseTimeToSecs)(files_js_1.finalResults.time)} seconds)`).dim()}`);
-                write_js_1.Write.log(`  ${(0, format_js_1.format)(`Test Files › ${(0, format_js_1.format)(String(files_js_1.fileResults.success.size + files_js_1.fileResults.fail.size)).bold()}`).dim()}`);
-                write_js_1.Write.hr();
-                write_js_1.Write.log(message);
-                write_js_1.Write.hr();
-            }
-            write_js_1.Write.log(`${(0, format_js_1.format)('Exited with code').dim()} ${(0, format_js_1.format)(String(code)).bold()[code === 0 ? 'success' : 'fail']()}\n`);
-        });
-    node_process_1.default.exitCode = code === 0 ? 0 : 1;
+  } else {
+    message += `${(0, formatJs1.format)(success).success().bold()}\n`;
+    message +=
+      pokuJs1.results.fail === 0
+        ? (0, formatJs1.format)(`${failure}\n`).bold()
+        : `${(0, formatJs1.format)(failure).fail().bold()}\n`;
+    message += `${(0, formatJs1.format)(skips).info().bold()}\n`;
+    message += `${(0, formatJs1.format)(plans).info().bold()}`;
+  }
+  !quiet &&
+    nodeProcess1.default.on("exit", (code) => {
+      if (isPoku) {
+        writeJs1.Write.hr();
+        writeJs1.Write.log(
+          `    ${(0, formatJs1.format)(
+            `Start at › ${(0, formatJs1.format)(`${(0, timeJs1.parseTime)(filesJs1.finalResults.started)}`).bold()}`
+          ).dim()}`
+        );
+        writeJs1.Write.log(
+          `    ${(0, formatJs1.format)("Duration ›").dim()} ${(0, formatJs1.format)(`${filesJs1.finalResults.time}ms`)
+            .bold()
+            .dim()} ${(0, formatJs1.format)(
+            `(±${(0, timeJs1.parseTimeToSecs)(filesJs1.finalResults.time)} seconds)`
+          ).dim()}`
+        );
+        writeJs1.Write.log(
+          `  ${(0, formatJs1.format)(
+            `Test Files › ${(0, formatJs1.format)(
+              String(filesJs1.fileResults.success.size + filesJs1.fileResults.fail.size)
+            ).bold()}`
+          ).dim()}`
+        );
+        writeJs1.Write.hr();
+        writeJs1.Write.log(message);
+        writeJs1.Write.hr();
+      }
+      writeJs1.Write.log(
+        `${(0, formatJs1.format)("Exited with code").dim()} ${(0, formatJs1.format)(String(code))
+          .bold()
+          [code === 0 ? "success" : "fail"]()}\n`
+      );
+    });
+  console.log("Patched");
+  nodeProcess1.default.exitCode = code === 0 ? 0 : 1;
 };
 exports.exit = exit;
 
-node_process_1.default.on('unhandledRejection', (err) => {
-    if (!(err instanceof node_assert_1.AssertionError)) {
-        console.error('unhandledRejection', err);
-    }
-    node_process_1.default.exitCode = 1;
+nodeProcess1.default.on("unhandledRejection", (err) => {
+  if (!(err instanceof nodeAssert1.AssertionError)) {
+    console.error("unhandledRejection", err);
+  }
+  nodeProcess1.default.exitCode = 1;
 });
-node_process_1.default.on('uncaughtException', (err) => {
-    if (!(err instanceof node_assert_1.AssertionError)) {
-        console.error('uncaughtException', err);
-    }
-    node_process_1.default.exitCode = 1;
+nodeProcess1.default.on("uncaughtException", (err) => {
+  if (!(err instanceof nodeAssert1.AssertionError)) {
+    console.error("uncaughtException", err);
+  }
+  nodeProcess1.default.exitCode = 1;
 });
-
