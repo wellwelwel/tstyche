@@ -163,7 +163,7 @@ jobs:
           path: build
       - run: |
           yarn run prebuild
-          seq 3 | xargs -I {} sh -c 'yarn test:e2e'
+          yarn test:e2e
         env:
           NODE_V8_COVERAGE: coverage/v8-coverage
           # FILTER: api-toRaiseError

@@ -841,7 +841,7 @@ Error: Expression type raised only 2 type errors.
       209 |     two(1111);
       210 |     two<string>("pass");
           |                 ~~~~~~
-      211 |   }).type.toRaiseError(2345, 2554, 2554);
+      211 |   }).type.toRaiseError(2345, 2554, 2554);..
       212 | });
       213 | 
 

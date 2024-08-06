@@ -11,15 +11,15 @@ services:
     working_dir: /usr/app
     volumes:
       - ./:/usr/app
-    command: yarn run test
+    command: yarn run test:e2e
     environment:
       CI: 1
-      # FILTER: api-toRaiseError.test.js
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: "2G"
-        reservations:
-          cpus: "1.0"
-          memory: "2G"
+      FILTER: api-toRaiseError.test.js
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.0"
+    #       memory: "2G"
+    #     reservations:
+    #       cpus: "1.0"
+    #       memory: "2G"

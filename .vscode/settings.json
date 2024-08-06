@@ -10,5 +10,6 @@
     "tstyche.config.json": "jsonc"
   },
   "typescript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "terminal.integrated.scrollback": 100000
 }
