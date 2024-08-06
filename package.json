@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "bench": "./benchmarks/tstyche.bench.sh",
-    "prebuild": "cp -f exit node_modules/poku/lib/modules/helpers/exit.js",
+    "prebuild": "cp -f exit node_modules/poku/lib/modules/helpers/exit.js && cp -f assert node_modules/poku/lib/services/assert.js",
     "build": "rollup --config rollup.config.js",
     "build:watch": "yarn build --sourcemap --watch",
     "check": "yarn check:spelling && yarn check:types",
